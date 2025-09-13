@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nömrə Copy Sistemi</title>
+  <title>Number Copy System</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 700px;
       padding: 20px;
       background: #f8f9fa;
     }
@@ -109,13 +108,13 @@
 <body>
 
 
-  <h2>Nömrə Copy Sistemi</h2>
+  <h2>Number Copy System</h2>
 <div class="input-box">
-  <textarea id="numbersInput" placeholder="Nömrələri buraya əlavə edin (hər sətirdə bir nömrə)..."></textarea>
+  <textarea id="numbersInput" placeholder="Add Numbers – Copy & Paste Directly from Excel"></textarea>
 </div>
   <div class="add-box">
-    <input type="text" id="newNumberInput" placeholder="Yeni nömrə əlavə et...">
-    <button onclick="addNumber()">Əlavə et</button>
+    <input type="text" id="newNumberInput" placeholder="New numbers...">
+    <button onclick="addNumber()">Add</button>
   </div>
 
     <h1>
@@ -124,12 +123,12 @@
 
 
   <div class="current">
-    <span id="currentNumber">Burada nömrə görsənəcək</span>
-    <button id="copyBtn">Copy</button>
+    <span id="currentNumber">Numbers</span>
+    <button id="copyBtn">Copy (ctrl+c)</button>
   </div>
 
   <div class="copied-list">
-    <h4>Kopyalanmış nömrələr: <span id="copiedCount">0</span></h4>
+    <h4>Copied numbers: <span id="copiedCount">0</span></h4>
     <div id="copiedNumbers"></div>
   </div>
 
@@ -169,7 +168,7 @@
       if (numbers.length > 0) {
         currentNumberEl.textContent = numbers[0];
       } else {
-        currentNumberEl.textContent = "Bütün nömrələr kopyalandı";
+        currentNumberEl.textContent = "All numbers copied!";
       }
       textarea.value = numbers.join("\n");
       renderCopied();
@@ -189,7 +188,7 @@
         const input = document.createElement("input");
         input.type = "text";
         input.value = item.comment || "";
-        input.placeholder = "Şərh əlavə et...";
+        input.placeholder = "Comment...";
         input.classList.add("comment-input");
 
         input.addEventListener("input", () => {
