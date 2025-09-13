@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="az">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -129,6 +129,10 @@
 
   <div class="copied-list">
     <h4>Copied numbers: <span id="copiedCount">0</span></h4>
+    <div style="text-align:center; margin-top:20px;">
+  <button id="resetBtn" style="background:#dc3545;">Reset / Clear All</button>
+</div>
+
     <div id="copiedNumbers"></div>
   </div>
 
@@ -252,7 +256,7 @@
         return;
       }
 
-      copiedNumbers.push({ number, comment: "" });
+      copiedNumbers.unshift({ number, comment: "" });
 
       navigator.clipboard.writeText(number).then(() => {
         saveState();
@@ -261,6 +265,22 @@
     }
 
     copyBtn.addEventListener("click", copyNumber);
+
+
+
+
+
+    const resetBtn = document.getElementById("resetBtn");
+
+resetBtn.addEventListener("click", () => {
+  if(confirm("You are about to reset all data. This action cannot be undone. Do you want to proceed?")) {
+    numbers = [];
+    copiedNumbers = [];
+    localStorage.removeItem(STORAGE_KEY);
+    showCurrent();
+  }
+});
+
 
     // Klaviaturada Ctrl+C → Copy düyməsi
     document.addEventListener("keydown", (e) => {
