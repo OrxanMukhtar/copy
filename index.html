@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nömrə Copy Sistemi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f8f9fa;
+    }
+    h2 {
+      text-align: center;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .add-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .add-box input {
+      flex: 1;
+      padding: 8px;
+      font-size: 14px;
+    }
+    .current {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 15px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    .current span {
+      font-weight: bold;
+      font-size: 16px;
+      color: #333;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .copied-list {
+      margin-top: 20px;
+      padding: 10px;
+      border-top: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .copied-list h4 {
+      margin-bottom: 10px;
+    }
+    .copied-item {
+      display: flex;
+      align-items: center;
+      margin: 5px 0;
+      gap: 10px;
+    }
+    .copied-number {
+      color: red;
+      min-width: 80px;
+      font-weight: bold;
+    }
+    .comment-input {
+      flex: 1;
+      padding: 5px;
+      font-size: 13px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Nömrə Copy Sistemi</h2>
+
+  <textarea id="numbersInput" placeholder="Nömrələri buraya əlavə edin (hər sətirdə bir nömrə)..."></textarea>
+
+  <div class="add-box">
+    <input type="text" id="newNumberInput" placeholder="Yeni nömrə əlavə et...">
+    <button onclick="addNumber()">Əlavə et</button>
+  </div>
+
+  <div class="current">
+    <span id="currentNumber">Burada nömrə görsənəcək</span>
+    <button id="copyBtn">Copy</button>
+  </div>
+
+  <div class="copied-list">
+    <h4>Kopyalanmış nömrələr: <span id="copiedCount">0</span></h4>
+    <div id="copiedNumbers"></div>
+  </div>
+
+  <script>
+    const textarea = document.getElementById("numbersInput");
+    const input = document.getElementById("newNumberInput");
+    const currentNumberEl = document.getElementById("currentNumber");
+    const copyBtn = document.getElementById("copyBtn");
+    const copiedList = document.getElementById("copiedNumbers");
+    const copiedCountEl = document.getElementById("copiedCount");
+
+    let numbers = [];
+    let copiedNumbers = []; // { number, comment }
+
+    const STORAGE_KEY = "numberCopyApp";
+
+    // LocalStorage yaz
+    function saveState() {
+      const state = { numbers, copiedNumbers };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    // LocalStorage oxu
+    function loadState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const state = JSON.parse(saved);
+        numbers = state.numbers || [];
+        copiedNumbers = state.copiedNumbers || [];
+      }
+    }
+
+    // Cari nömrəni göstər
+    function showCurrent() {
+      if (numbers.length > 0) {
+        currentNumberEl.textContent = numbers[0];
+      } else {
+        currentNumberEl.textContent = "Bütün nömrələr kopyalandı";
+      }
+      textarea.value = numbers.join("\n");
+      renderCopied();
+    }
+
+    // Siyahını göstər
+    function renderCopied() {
+      copiedList.innerHTML = "";
+      copiedNumbers.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.classList.add("copied-item");
+
+        const span = document.createElement("span");
+        span.textContent = (index + 1) + ". " + item.number;
+        span.classList.add("copied-number");
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = item.comment || "";
+        input.placeholder = "Şərh əlavə et...";
+        input.classList.add("comment-input");
+
+        input.addEventListener("input", () => {
+          copiedNumbers[index].comment = input.value;
+          saveState();
+        });
+
+        div.appendChild(span);
+        div.appendChild(input);
+        copiedList.appendChild(div);
+      });
+
+      copiedCountEl.textContent = copiedNumbers.length;
+    }
+
+    // Nömrələri təmizlə (yalnız rəqəmlər qalsın)
+    function cleanNumbers(inputText) {
+      return inputText.split("\n")
+        .map(num => num.replace(/\D/g, "")) // yalnız rəqəmləri saxla
+        .filter(num => num !== "");
+    }
+
+    // Textarea dəyişəndə
+    textarea.addEventListener("input", () => {
+      numbers = cleanNumbers(textarea.value);
+      saveState();
+      showCurrent();
+    });
+
+    // Yeni nömrə əlavə et (always newline)
+    function addNumber() {
+      let newNumber = input.value.trim().replace(/\D/g, ""); // yalnız rəqəmləri saxla
+      if (newNumber) {
+        numbers.push(newNumber);
+        input.value = "";
+        saveState();
+        showCurrent();
+      }
+    }
+
+    // Input-da Enter → addNumber
+    input.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        addNumber();
+      }
+    });
+
+    // Copy funksiyası
+    function copyNumber() {
+      if (numbers.length === 0) return;
+
+      const number = numbers.shift();
+
+      // Əgər artıq listdə varsa → twins
+      const alreadyCopied = copiedNumbers.some(item => item.number === number);
+      if (alreadyCopied) {
+        alert("Twins: Bu nömrə artıq kopyalanıb!");
+        saveState();
+        showCurrent();
+        return;
+      }
+
+      copiedNumbers.push({ number, comment: "" });
+
+      navigator.clipboard.writeText(number).then(() => {
+        saveState();
+        showCurrent();
+      });
+    }
+
+    copyBtn.addEventListener("click", copyNumber);
+
+    // Klaviaturada Ctrl+C → Copy düyməsi
+    document.addEventListener("keydown", (e) => {
+      if (e.ctrlKey && e.key.toLowerCase() === "c") {
+        e.preventDefault();
+        copyNumber();
+      }
+    });
+
+    // İlk dəfə yüklənəndə
+    loadState();
+    showCurrent();
+  </script>
+</body>
+</html>
