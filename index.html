@@ -124,7 +124,10 @@
 
   <div class="current">
     <span id="currentNumber">Numbers</span>
+<div style="display:flex; gap:10px;">
     <button id="copyBtn">Copy (ctrl+c)</button>
+    <button id="callBtn" style="background:#28a745; width: 100px;">Call</button>
+  </div>    
   </div>
 
   <div class="copied-list">
@@ -266,6 +269,15 @@
 
     copyBtn.addEventListener("click", copyNumber);
 
+
+
+    const callBtn = document.getElementById("callBtn");
+
+callBtn.addEventListener("click", () => {
+  if (numbers.length === 0) return;
+  const number = numbers[0]; // Hələ copy olunmamış cari nömrə
+  window.location.href = "tel:" + number;
+});
 
 
 
