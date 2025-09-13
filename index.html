@@ -8,7 +8,6 @@
     body {
       font-family: Arial, sans-serif;
       max-width: 700px;
-      margin: 40px auto;
       padding: 20px;
       background: #f8f9fa;
     }
@@ -16,9 +15,9 @@
       text-align: center;
     }
     textarea {
-      width: 100%;
+      width: 90%;
       height: 120px;
-      padding: 10px;
+      padding: 10px 0 10px 10px;
       margin-bottom: 10px;
       font-size: 14px;
     }
@@ -86,18 +85,43 @@
       border: 1px solid #ddd;
       border-radius: 4px;
     }
+    .input-box {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    h1 {
+      text-align: start;
+      margin-bottom: 30px;
+      color: #fff;
+      padding: 10px;
+      background-color: #007bff;
+      font-size: 20px;
+      font-weight: bold;
+      text-shadow: 2px 2px 1px rgba(255, 0, 0, 0.1);
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+    h1 a {
+        color: #fff;
+        text-decoration: none;
+    }
   </style>
 </head>
 <body>
 
+
   <h2>Nömrə Copy Sistemi</h2>
-
+<div class="input-box">
   <textarea id="numbersInput" placeholder="Nömrələri buraya əlavə edin (hər sətirdə bir nömrə)..."></textarea>
-
+</div>
   <div class="add-box">
     <input type="text" id="newNumberInput" placeholder="Yeni nömrə əlavə et...">
     <button onclick="addNumber()">Əlavə et</button>
   </div>
+
+    <h1>
+        <a href="https://mukhtarli.netlify.app/" target="_blank">Mukhtarli</a>
+    </h1>
+
 
   <div class="current">
     <span id="currentNumber">Burada nömrə görsənəcək</span>
@@ -108,6 +132,8 @@
     <h4>Kopyalanmış nömrələr: <span id="copiedCount">0</span></h4>
     <div id="copiedNumbers"></div>
   </div>
+
+  
 
   <script>
     const textarea = document.getElementById("numbersInput");
