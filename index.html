@@ -10,103 +10,57 @@
       padding: 20px;
       background: #f8f9fa;
     }
-    h2 {
-      text-align: center;
-    }
+    h2 { text-align: center; }
     textarea {
-      width: 90%;
-      height: 120px;
+      width: 90%; height: 120px;
       padding: 10px 0 10px 10px;
       margin-bottom: 10px;
       font-size: 14px;
     }
-    .add-box {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    .add-box input {
-      flex: 1;
-      padding: 8px;
-      font-size: 14px;
-    }
+    .add-box { display: flex; gap: 10px; margin-bottom: 20px; }
+    .add-box input { flex: 1; padding: 8px; font-size: 14px; }
     .current {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 15px;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      margin-bottom: 15px;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 15px; background: white; border: 1px solid #ddd;
+      border-radius: 8px; margin-bottom: 15px;
     }
-    .current span {
-      font-weight: bold;
-      font-size: 16px;
-      color: #333;
-    }
+    .current span { font-weight: bold; font-size: 16px; color: #333; }
     button {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: 0.3s;
+      background: #007bff; color: white; border: none;
+      padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: 0.3s;
     }
-    button:hover {
-      background: #0056b3;
-    }
-    .copied-list {
-      margin-top: 20px;
-      padding: 10px;
-      border-top: 1px solid #ccc;
-      font-size: 14px;
-    }
-    .copied-list h4 {
-      margin-bottom: 10px;
-    }
+    button:hover { background: #0056b3; }
+    .copied-list { margin-top: 20px; padding: 10px; border-top: 1px solid #ccc; font-size: 14px; }
+    .copied-list h4 { margin-bottom: 10px; }
     .copied-item {
-      display: flex;
-      align-items: center;
-      margin: 5px 0;
-      gap: 10px;
+      display: flex; align-items: center; margin: 5px 0; gap: 10px;
     }
-    .copied-number {
-      color: red;
-      min-width: 80px;
-      font-weight: bold;
-    }
+    .copied-number { color: red; min-width: 80px; font-weight: bold; }
     .comment-input {
-      flex: 1;
-      padding: 5px;
-      font-size: 13px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+      flex: 1; padding: 5px; font-size: 13px;
+      border: 1px solid #ddd; border-radius: 4px;
     }
-    .input-box {
-      text-align: center;
-      margin-bottom: 15px;
-    }
+    .input-box { text-align: center; margin-bottom: 15px; }
     h1 {
-      text-align: start;
-      margin-bottom: 30px;
-      color: #fff;
-      padding: 10px;
-      background-color: #007bff;
-      font-size: 20px;
-      font-weight: bold;
+      text-align: start; margin-bottom: 30px; color: #fff; padding: 10px;
+      background-color: #007bff; font-size: 20px; font-weight: bold;
       text-shadow: 2px 2px 1px rgba(255, 0, 0, 0.1);
       font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
-    h1 a {
-        color: #fff;
-        text-decoration: none;
+    h1 a { color: #fff; text-decoration: none; }
+
+    /* QR kod üçün stil */
+    .qr-box {
+      margin-left: auto;
+      margin-right: 0;
+      padding: 5px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
-
 
   <h2>Number Copy System</h2>
 <div class="input-box">
@@ -117,29 +71,30 @@
     <button onclick="addNumber()">Add</button>
   </div>
 
-    <h1>
-        <a href="https://mukhtarli.netlify.app/" target="_blank">Mukhtarli</a>
-    </h1>
-
+  <h1>
+    <a href="https://mukhtarli.netlify.app/" target="_blank">Mukhtarli</a>
+  </h1>
 
   <div class="current">
     <span id="currentNumber">Numbers</span>
-<div style="display:flex; gap:10px;">
-    <button id="copyBtn">Copy (ctrl+c)</button>
-    <button id="callBtn" style="background:#28a745; width: 100px;">Call</button>
-  </div>    
+    <div style="display:flex; gap:10px; align-items:center;">
+      <button id="copyBtn">Copy (ctrl+c)</button>
+      <button id="callBtn" style="background:#28a745; width: 100px;">Call</button>
+      <!-- 🔽 QR kod sahəsi -->
+      <div id="qrcode" class="qr-box"></div>
+    </div>    
   </div>
 
   <div class="copied-list">
     <h4>Copied numbers: <span id="copiedCount">0</span></h4>
     <div style="text-align:center; margin-top:20px;">
-  <button id="resetBtn" style="background:#dc3545;">Reset / Clear All</button>
-</div>
-
+      <button id="resetBtn" style="background:#dc3545;">Reset / Clear All</button>
+    </div>
     <div id="copiedNumbers"></div>
   </div>
 
-  
+  <!-- 🔽 QR Code kitabxanası əlavə olunur -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <script>
     const textarea = document.getElementById("numbersInput");
@@ -148,19 +103,17 @@
     const copyBtn = document.getElementById("copyBtn");
     const copiedList = document.getElementById("copiedNumbers");
     const copiedCountEl = document.getElementById("copiedCount");
+    const qrContainer = document.getElementById("qrcode");
 
     let numbers = [];
     let copiedNumbers = []; // { number, comment }
 
     const STORAGE_KEY = "numberCopyApp";
 
-    // LocalStorage yaz
     function saveState() {
       const state = { numbers, copiedNumbers };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
-
-    // LocalStorage oxu
     function loadState() {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
@@ -174,14 +127,25 @@
     function showCurrent() {
       if (numbers.length > 0) {
         currentNumberEl.textContent = numbers[0];
+        generateQR(numbers[0]); // ✅ QR kodu hər dəfə yenilə
       } else {
         currentNumberEl.textContent = "All numbers copied!";
+        qrContainer.innerHTML = ""; // boşalt
       }
       textarea.value = numbers.join("\n");
       renderCopied();
     }
 
-    // Siyahını göstər
+    // QR kod generator
+    function generateQR(text) {
+      qrContainer.innerHTML = "";
+      new QRCode(qrContainer, {
+        text: text,
+        width: 80,
+        height: 80,
+      });
+    }
+
     function renderCopied() {
       copiedList.innerHTML = "";
       copiedNumbers.forEach((item, index) => {
@@ -211,23 +175,20 @@
       copiedCountEl.textContent = copiedNumbers.length;
     }
 
-    // Nömrələri təmizlə (yalnız rəqəmlər qalsın)
     function cleanNumbers(inputText) {
       return inputText.split("\n")
-        .map(num => num.replace(/\D/g, "")) // yalnız rəqəmləri saxla
+        .map(num => num.replace(/\D/g, ""))
         .filter(num => num !== "");
     }
 
-    // Textarea dəyişəndə
     textarea.addEventListener("input", () => {
       numbers = cleanNumbers(textarea.value);
       saveState();
       showCurrent();
     });
 
-    // Yeni nömrə əlavə et (always newline)
     function addNumber() {
-      let newNumber = input.value.trim().replace(/\D/g, ""); // yalnız rəqəmləri saxla
+      let newNumber = input.value.trim().replace(/\D/g, "");
       if (newNumber) {
         numbers.push(newNumber);
         input.value = "";
@@ -236,7 +197,6 @@
       }
     }
 
-    // Input-da Enter → addNumber
     input.addEventListener("keypress", function(e) {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -244,13 +204,9 @@
       }
     });
 
-    // Copy funksiyası
     function copyNumber() {
       if (numbers.length === 0) return;
-
       const number = numbers.shift();
-
-      // Əgər artıq listdə varsa → twins
       const alreadyCopied = copiedNumbers.some(item => item.number === number);
       if (alreadyCopied) {
         alert("Twins: Bu nömrə artıq kopyalanıb!");
@@ -258,9 +214,7 @@
         showCurrent();
         return;
       }
-
       copiedNumbers.unshift({ number, comment: "" });
-
       navigator.clipboard.writeText(number).then(() => {
         saveState();
         showCurrent();
@@ -269,32 +223,23 @@
 
     copyBtn.addEventListener("click", copyNumber);
 
-
-
     const callBtn = document.getElementById("callBtn");
-
-callBtn.addEventListener("click", () => {
-  if (numbers.length === 0) return;
-  const number = numbers[0]; // Hələ copy olunmamış cari nömrə
-  window.location.href = "tel:" + number;
-});
-
-
-
+    callBtn.addEventListener("click", () => {
+      if (numbers.length === 0) return;
+      const number = numbers[0];
+      window.location.href = "tel:" + number;
+    });
 
     const resetBtn = document.getElementById("resetBtn");
+    resetBtn.addEventListener("click", () => {
+      if(confirm("You are about to reset all data. This action cannot be undone. Do you want to proceed?")) {
+        numbers = [];
+        copiedNumbers = [];
+        localStorage.removeItem(STORAGE_KEY);
+        showCurrent();
+      }
+    });
 
-resetBtn.addEventListener("click", () => {
-  if(confirm("You are about to reset all data. This action cannot be undone. Do you want to proceed?")) {
-    numbers = [];
-    copiedNumbers = [];
-    localStorage.removeItem(STORAGE_KEY);
-    showCurrent();
-  }
-});
-
-
-    // Klaviaturada Ctrl+C → Copy düyməsi
     document.addEventListener("keydown", (e) => {
       if (e.ctrlKey && e.key.toLowerCase() === "c") {
         e.preventDefault();
@@ -302,7 +247,6 @@ resetBtn.addEventListener("click", () => {
       }
     });
 
-    // İlk dəfə yüklənəndə
     loadState();
     showCurrent();
   </script>
