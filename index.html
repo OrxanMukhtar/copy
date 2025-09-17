@@ -223,12 +223,18 @@
 
     copyBtn.addEventListener("click", copyNumber);
 
-    const callBtn = document.getElementById("callBtn");
-    callBtn.addEventListener("click", () => {
-      if (numbers.length === 0) return;
-      const number = numbers[0];
-      window.location.href = "tel:" + number;
-    });
+const callBtn = document.getElementById("callBtn");
+callBtn.addEventListener("click", () => {
+  if (numbers.length === 0) return;
+  const number = numbers.shift(); // ✅ hovuzdan çıxart
+  const alreadyCopied = copiedNumbers.some(item => item.number === number);
+  if (!alreadyCopied) {
+    copiedNumbers.unshift({ number, comment: "📞 Called" });
+  }
+  saveState();
+  showCurrent();
+  window.location.href = "tel:" + number; // zəng aç
+});
 
     const resetBtn = document.getElementById("resetBtn");
     resetBtn.addEventListener("click", () => {
