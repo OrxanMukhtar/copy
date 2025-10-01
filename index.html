@@ -23,6 +23,7 @@
       display: flex; justify-content: space-between; align-items: center;
       padding: 12px 15px; background: white; border: 1px solid #ddd;
       border-radius: 8px; margin-bottom: 15px;
+      flex-wrap: wrap; gap: 10px;
     }
     .current span { font-weight: bold; font-size: 16px; color: #333; }
     button {
@@ -77,7 +78,7 @@
 
   <div class="current">
     <span id="currentNumber">Numbers</span>
-    <div style="display:flex; gap:10px; align-items:center;">
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap: wrap;">
       <button id="copyBtn">Copy (ctrl+c)</button>
       <button id="callBtn" style="background:#28a745; width: 100px;">Call</button>
       <!-- 🔽 QR kod sahəsi -->
@@ -126,8 +127,8 @@
     // Cari nömrəni göstər
     function showCurrent() {
       if (numbers.length > 0) {
-        currentNumberEl.textContent = numbers[0];
-        generateQR(numbers[0]); // ✅ QR kodu hər dəfə yenilə
+        currentNumberEl.textContent = `+${numbers[0]}`;
+        generateQR(`+${numbers[0]}`); // ✅ QR kodu hər dəfə yenilə
       } else {
         currentNumberEl.textContent = "All numbers copied!";
         qrContainer.innerHTML = ""; // boşalt
@@ -209,7 +210,7 @@
       const number = numbers.shift();
       const alreadyCopied = copiedNumbers.some(item => item.number === number);
       if (alreadyCopied) {
-        alert("Twins: Bu nömrə artıq kopyalanıb!");
+        alert("Twins: This number has already been copied.");
         saveState();
         showCurrent();
         return;
